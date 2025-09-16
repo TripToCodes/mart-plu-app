@@ -8,7 +8,13 @@ import LoadingSpinner from "../LoadingSpinner";
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [showAdminModal, setShowAdminModal] = useState(false);
+  const [passcode, setPasscode] = useState("");
+  const [passcodeError, setPasscodeError] = useState("");
   const navigate = useNavigate();
+
+  // Admin passcode (in production, this should be environment variable or stored securely)
+  const ADMIN_PASSCODE = "123456";
 
   // Fetch top 30 newest produce items
   const { data: recentProduceItems = [], isLoading: loadingRecent } = useQuery({
@@ -48,6 +54,38 @@ const HomePage = () => {
     navigate(`/produce/${item.id}`);
   };
 
+  const handleAdminClick = () => {
+    setShowAdminModal(true);
+    setPasscode("");
+    setPasscodeError("");
+  };
+
+  const handlePasscodeSubmit = (e) => {
+    e.preventDefault();
+
+    if (passcode === ADMIN_PASSCODE) {
+      setShowAdminModal(false);
+      navigate("/admin");
+    } else {
+      setPasscodeError("Invalid passcode. Please try again.");
+      setPasscode("");
+    }
+  };
+
+  const handleModalClose = () => {
+    setShowAdminModal(false);
+    setPasscode("");
+    setPasscodeError("");
+  };
+
+  const handlePasscodeChange = (e) => {
+    const value = e.target.value.replace(/\D/g, ""); // Only allow digits
+    if (value.length <= 6) {
+      setPasscode(value);
+      setPasscodeError("");
+    }
+  };
+
   const displayItems = searchQuery.trim() ? searchResults : recentProduceItems;
   const isLoading = searchQuery.trim() ? loadingSearch : loadingRecent;
 
@@ -58,12 +96,12 @@ const HomePage = () => {
         <div className="px-4 py-4">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold text-gray-800">Produce Search</h1>
-            <Link
-              to="/admin"
+            <button
+              onClick={handleAdminClick}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
             >
               Admin
-            </Link>
+            </button>
           </div>
           <SearchBar
             value={searchQuery}
@@ -123,6 +161,94 @@ const HomePage = () => {
           </div>
         )}
       </main>
+
+      {/* Admin Passcode Modal */}
+      {showAdminModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-sm">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-800">Admin Access</h3>
+                <button
+                  onClick={handleModalClose}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Body */}
+            <form onSubmit={handlePasscodeSubmit} className="px-6 py-6">
+              <div className="text-center mb-6">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <svg
+                    className="w-6 h-6 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
+                  </svg>
+                </div>
+                <p className="text-gray-600 text-sm">
+                  Enter the 6-digit admin passcode to continue
+                </p>
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="passcode" className="block text-sm font-medium text-gray-700 mb-2">
+                  Passcode
+                </label>
+                <input
+                  type="text"
+                  id="passcode"
+                  value={passcode}
+                  onChange={handlePasscodeChange}
+                  placeholder="000000"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-center text-2xl font-mono tracking-widest"
+                  maxLength="6"
+                  autoComplete="off"
+                  autoFocus
+                />
+                {passcodeError && (
+                  <p className="text-red-500 text-sm mt-2 text-center">{passcodeError}</p>
+                )}
+              </div>
+
+              <div className="flex space-x-3">
+                <button
+                  type="button"
+                  onClick={handleModalClose}
+                  className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={passcode.length !== 6}
+                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  Access
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -319,7 +319,7 @@ const AdminDashboard = () => {
         {/* Items List */}
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-col justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-800">
                 Produce Items ({totalCount} total)
               </h2>
@@ -330,7 +330,7 @@ const AdminDashboard = () => {
             <SearchBar
               value={searchQuery}
               onChange={setSearchQuery}
-              placeholder="Search by name, PLU code, or description to view items..."
+              placeholder="Search item names or codes..."
             />
           </div>
 

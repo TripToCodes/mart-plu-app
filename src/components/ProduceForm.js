@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase, uploadProducePhoto, deleteProducePhoto } from "../src/supabase";
+import { supabase, uploadProducePhoto, deleteProducePhoto } from "../supabase";
 
 const ProduceForm = ({ editingItem, onSuccess, onError, onCancel }) => {
   const queryClient = useQueryClient();

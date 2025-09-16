@@ -2,10 +2,10 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase, uploadProducePhoto, deleteProducePhoto } from "../supabase";
-import ProduceForm from "../ProduceForm";
-import LoadingSpinner from "../LoadingSpinner";
-import Toast from "../Toast";
-import SearchBar from "../SearchBar";
+import ProduceForm from "../components/ProduceForm";
+import LoadingSpinner from "../components/LoadingSpinner";
+import Toast from "../components/Toast";
+import SearchBar from "../components/SearchBar";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();

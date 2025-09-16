@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../supabase";
-import ProduceCard from "../ProduceCard";
-import SearchBar from "../SearchBar";
-import LoadingSpinner from "../LoadingSpinner";
+import ProduceCard from "../components/ProduceCard";
+import SearchBar from "../components/SearchBar";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -65,7 +65,7 @@ const HomePage = () => {
 
     if (passcode === ADMIN_PASSCODE) {
       setShowAdminModal(false);
-      navigate("/admin");
+      navigate("/d4sh8o4rd_s3cur3_t0k3n_2024");
     } else {
       setPasscodeError("Invalid passcode. Please try again.");
       setPasscode("");

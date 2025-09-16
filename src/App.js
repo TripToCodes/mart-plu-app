@@ -14,7 +14,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/produce/:id" element={<ProduceDetail />} />
-            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/d4sh8o4rd_s3cur3_t0k3n_2024" element={<AdminDashboard />} />
           </Routes>
         </div>
       </Router>

@@ -2,7 +2,7 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../supabase";
-import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const ProduceDetail = () => {
   const { id } = useParams();

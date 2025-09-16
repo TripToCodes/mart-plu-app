@@ -5,10 +5,12 @@ import { supabase, uploadProducePhoto, deleteProducePhoto } from "../supabase";
 import ProduceForm from "../ProduceForm";
 import LoadingSpinner from "../LoadingSpinner";
 import Toast from "../Toast";
+import SearchBar from "../SearchBar";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [searchQuery, setSearchQuery] = useState("");
   const [editingItem, setEditingItem] = useState(null);
   const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
@@ -21,6 +23,18 @@ const AdminDashboard = () => {
       if (error) throw error;
       return data;
     },
+  });
+
+  // Search produceItems
+  const filteredItems = produceItems.filter((item) => {
+    if (!searchQuery.trim()) return true;
+
+    const query = searchQuery.toLowerCase();
+    return (
+      item.name?.toLowerCase().includes(query) ||
+      item.plu_code?.toLowerCase().includes(query) ||
+      item.description?.toLowerCase().includes(query)
+    );
   });
 
   // Delete mutation
@@ -38,6 +52,7 @@ const AdminDashboard = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["allProduce"] });
+      queryClient.invalidateQueries({ queryKey: ["recentProduce"] });
       showToast("Item deleted successfully", "success");
     },
     onError: (error) => {
@@ -62,7 +77,7 @@ const AdminDashboard = () => {
   };
 
   const handleCsvExport = () => {
-    const headers = ["name", "plu_code", "description", "searched_count"];
+    const headers = ["name", "plu_code", "description"];
     const rows = produceItems.map((item) =>
       headers.map((header) => `"${item[header] || ""}"`).join(",")
     );
@@ -86,7 +101,6 @@ const AdminDashboard = () => {
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="px-4 py-4 space-y-4">
-          {/* Back Button Row */}
           <div>
             <button
               onClick={() => navigate("/")}
@@ -104,7 +118,6 @@ const AdminDashboard = () => {
             </button>
           </div>
 
-          {/* Title + Export Row */}
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
             <button
@@ -138,9 +151,21 @@ const AdminDashboard = () => {
         {/* Items List */}
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-800">
-              Produce Items ({produceItems.length})
-            </h2>
+            <div className="flex flex-col mb-4">
+              <h2 className="text-lg font-semibold text-gray-800">
+                Produce Items ({searchQuery.trim() ? filteredItems.length : produceItems.length})
+              </h2>
+              {searchQuery.trim() && (
+                <p className="text-sm text-gray-500">
+                  Showing {filteredItems.length} of {produceItems.length} items
+                </p>
+              )}
+            </div>
+            <SearchBar
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Search item names or codes..."
+            />
           </div>
 
           {produceItems.length === 0 ? (
@@ -160,9 +185,26 @@ const AdminDashboard = () => {
               </svg>
               No produce items found. Add your first item above.
             </div>
+          ) : filteredItems.length === 0 ? (
+            <div className="p-8 text-center text-gray-500">
+              <svg
+                className="w-12 h-12 mx-auto mb-4 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+              No items match your search for "{searchQuery}".
+            </div>
           ) : (
             <div className="divide-y divide-gray-200">
-              {produceItems.map((item) => (
+              {filteredItems.map((item) => (
                 <div key={item.id} className="p-6 hover:bg-gray-50 transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">

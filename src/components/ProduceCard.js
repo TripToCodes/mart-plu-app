@@ -6,9 +6,14 @@ const ProduceCard = ({ item, onClick }) => {
     >
       {/* Content */}
       <div className="p-3 text-center">
-        <h3 className="font-bold text-gray-800 truncate text-sm">{item.name}</h3>
+        {/* Name: clamp to 2 lines */}
+        <h3 className="font-bold text-gray-800 text-sm line-clamp-2">{item.name}</h3>
+
+        {/* PLU Code */}
         <p className="text-md text-blue-500 font-mono mt-1">{item.plu_code}</p>
-        <p className="text-xs text-gray-500 font-mono mt-1">{item.description}</p>
+
+        {/* Description: clamp to 2 lines */}
+        <p className="text-xs text-gray-500 font-mono mt-1 line-clamp-2">{item.description}</p>
       </div>
     </div>
   );

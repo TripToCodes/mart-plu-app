@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import AdminDashboard from "./AdminDashboard";
 
@@ -12,8 +12,8 @@ const ProtectedAdminRoute = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Security constants (should be environment variables in production)
-  const ADMIN_PASSCODE = "123456";
-  const ADMIN_ROUTE_TOKEN = "d4sh8o4rd_s3cur3_t0k3n_2024";
+  const ADMIN_PASSCODE = process.env.REACT_APP_ADMIN_PASSCODE;
+  const ADMIN_ROUTE_TOKEN = process.env.REACT_APP_ADMIN_ROUTE_TOKEN;
   const AUTH_TIMEOUT = 30 * 60 * 1000; // 30 minutes
 
   useEffect(() => {
@@ -151,11 +151,11 @@ const ProtectedAdminRoute = () => {
                 6-Digit Passcode
               </label>
               <input
-                type="text"
+                type="password"
                 id="passcode"
                 value={passcode}
                 onChange={handlePasscodeChange}
-                placeholder="000000"
+                placeholder="••••••"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-center text-2xl font-mono tracking-widest"
                 maxLength="6"
                 autoComplete="off"

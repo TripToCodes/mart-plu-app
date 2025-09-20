@@ -148,6 +148,7 @@ const AdminDashboard = () => {
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
   }
+
   const handleCsvExport = async () => {
     try {
       // Fetch all items for export
@@ -187,7 +188,7 @@ const AdminDashboard = () => {
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="px-4 py-4 space-y-4">
           {/* Back Button Row */}
-          <div className="flex">
+          <div>
             <button
               onClick={() => navigate("/")}
               className="flex items-center text-blue-600 hover:text-blue-700 transition-colors"
@@ -202,13 +203,16 @@ const AdminDashboard = () => {
               </svg>
               Back
             </button>
-            <h1 className="text-2xl font-bold text-gray-800 ml-2">Admin Dashboard</h1>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="px-4 py-2">
+      <main className="px-4 py-6">
         {/* Add/Edit Form */}
         <div className="bg-white rounded-xl shadow-md p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">
@@ -319,18 +323,18 @@ const AdminDashboard = () => {
         {/* Items List */}
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
-            <div className="flex flex-col justify-between mb-4">
+            <div className="flex flex-col mb-4">
               <h2 className="text-lg font-semibold text-gray-800">
                 Produce Items ({totalCount} total)
               </h2>
               {searchQuery.trim() && (
-                <span className="text-sm text-gray-500">Found {searchResults.length} items</span>
+                <p className="text-sm text-gray-500">Found {searchResults.length} items</p>
               )}
             </div>
             <SearchBar
               value={searchQuery}
               onChange={setSearchQuery}
-              placeholder="Search item names or codes..."
+              placeholder="Search by name, PLU code, or description to view items..."
             />
           </div>
 

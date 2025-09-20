@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import HomePage from "./components/HomePage";
 import ProduceDetail from "./components/ProduceDetail";
-import AdminDashboard from "./components/AdminDashboard";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 
 const queryClient = new QueryClient();
 
@@ -14,7 +14,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/produce/:id" element={<ProduceDetail />} />
-            <Route path="/d4sh8o4rd_s3cur3_t0k3n_2024" element={<AdminDashboard />} />
+            <Route path="/admin/:token" element={<ProtectedAdminRoute />} />
           </Routes>
         </div>
       </Router>

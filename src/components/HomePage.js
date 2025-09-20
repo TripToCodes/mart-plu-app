@@ -13,8 +13,8 @@ const HomePage = () => {
   const [passcodeError, setPasscodeError] = useState("");
   const navigate = useNavigate();
 
-  // Admin passcode (in production, this should be environment variable or stored securely)
-  const ADMIN_PASSCODE = "123456";
+  const ADMIN_PASSCODE = process.env.REACT_APP_ADMIN_PASSCODE;
+  const ADMIN_ROUTE_TOKEN = process.env.REACT_APP_ADMIN_ROUTE_TOKEN;
 
   // Fetch top 30 newest produce items
   const { data: recentProduceItems = [], isLoading: loadingRecent } = useQuery({
@@ -65,7 +65,11 @@ const HomePage = () => {
 
     if (passcode === ADMIN_PASSCODE) {
       setShowAdminModal(false);
-      navigate("/d4sh8o4rd_s3cur3_t0k3n_2024");
+      // Store authentication state in sessionStorage
+      sessionStorage.setItem("adminAuth", ADMIN_PASSCODE);
+      sessionStorage.setItem("adminAuthTime", Date.now().toString());
+      // Navigate to secure admin route
+      navigate(`/admin/${ADMIN_ROUTE_TOKEN}`);
     } else {
       setPasscodeError("Invalid passcode. Please try again.");
       setPasscode("");
@@ -214,11 +218,11 @@ const HomePage = () => {
                   Passcode
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   id="passcode"
                   value={passcode}
                   onChange={handlePasscodeChange}
-                  placeholder="000000"
+                  placeholder="••••••"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-center text-2xl font-mono tracking-widest"
                   maxLength="6"
                   autoComplete="off"

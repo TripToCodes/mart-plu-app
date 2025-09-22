@@ -1,0 +1,13 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 128 128" aria-labelledby="title desc" role="img">
+  <title id="title">PLU logo</title>
+  <desc id="desc">Centered white PLU text on a reddish background.</desc>
+
+  <!-- Reddish background -->
+  <rect width="128" height="128" fill="#E53935" rx="16" ry="16"></rect>
+
+  <!-- White PLU text -->
+  <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial" font-weight="700" font-size="48" fill="white">
+    PLU
+  </text>
+</svg>
